@@ -1,0 +1,10 @@
+[project]
+name = "hello-pydanticai"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "markitdown>=0.1.2",
+    "pydantic-ai>=0.2.16",
+]

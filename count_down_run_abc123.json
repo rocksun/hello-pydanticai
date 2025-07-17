@@ -1,0 +1,91 @@
+[
+  {
+    "state": {
+      "counter": 5
+    },
+    "node": {
+      "node_id": "CountDown"
+    },
+    "start_ts": "2025-07-07T02:11:10.230221Z",
+    "duration": 0.000017099897377192974,
+    "status": "success",
+    "kind": "node",
+    "id": "CountDown:ef421e9469db433594c0404d88d55216"
+  },
+  {
+    "state": {
+      "counter": 4
+    },
+    "node": {
+      "node_id": "CountDown"
+    },
+    "start_ts": "2025-07-07T02:11:10.319760Z",
+    "duration": 7.6000578701496124e-6,
+    "status": "success",
+    "kind": "node",
+    "id": "CountDown:55e72eb4dbac4ebaabb33bd6523caca9"
+  },
+  {
+    "state": {
+      "counter": 3
+    },
+    "node": {
+      "node_id": "CountDown"
+    },
+    "start_ts": "2025-07-07T02:11:10.403670Z",
+    "duration": 6.3999323174357414e-6,
+    "status": "success",
+    "kind": "node",
+    "id": "CountDown:39ad40dfd8cd4b7699291aaaf7b8f0ea"
+  },
+  {
+    "state": {
+      "counter": 2
+    },
+    "node": {
+      "node_id": "CountDown"
+    },
+    "start_ts": "2025-07-07T02:11:10.493558Z",
+    "duration": 0.00001550000160932541,
+    "status": "success",
+    "kind": "node",
+    "id": "CountDown:2bfbd4c92a48470fb8f00efffb8e15a8"
+  },
+  {
+    "state": {
+      "counter": 1
+    },
+    "node": {
+      "node_id": "CountDown"
+    },
+    "start_ts": "2025-07-07T02:11:10.580374Z",
+    "duration": 0.000010999967344105244,
+    "status": "success",
+    "kind": "node",
+    "id": "CountDown:e3923da38cb74f5eb7b9a33b6178d139"
+  },
+  {
+    "state": {
+      "counter": 0
+    },
+    "node": {
+      "node_id": "CountDown"
+    },
+    "start_ts": "2025-07-07T02:11:10.684218Z",
+    "duration": 0.000012999982573091984,
+    "status": "success",
+    "kind": "node",
+    "id": "CountDown:e5be72e4bc6d4ffab01a0715ce4efddb"
+  },
+  {
+    "state": {
+      "counter": 0
+    },
+    "result": {
+      "data": 0
+    },
+    "ts": "2025-07-07T02:11:10.702221Z",
+    "kind": "end",
+    "id": "end:d845c3617193489ea1c4f87ae5faca9e"
+  }
+]

@@ -1,4 +1,4 @@
-from pydantic_ai import Agent
+from pydantic_ai import Agent, RunContext
 import os
 import httpx
 from pydantic_ai.models.gemini import GeminiModel  # Update import to use GeminiModel
@@ -39,7 +39,7 @@ translator_agent = Agent(
     model=model,
     retries=3,
     instructions="""As a cloud native expert and translator.
-Translate this article from English to Chinese. 
+Fetch and Translate this article from English to Chinese. 
 Keep the markdown format intact.
 
 TRANSLATION REQUIREMENTS:
@@ -52,6 +52,8 @@ TRANSLATION REQUIREMENTS:
 - Make sure translate the text into Simplified Chinese."""
 )
 
+
+@translator_agent.tool_plain
 async def fetch_and_convert_to_markdown(url: str) -> str:
     """
     Fetches and converts the content of the given URL to markdown format.
@@ -73,9 +75,8 @@ async def fetch_and_convert_to_markdown(url: str) -> str:
 
 async def main():
     url = 'https://thenewstack.io/boost-performance-with-react-server-components-and-next-js/'
-    content = await fetch_and_convert_to_markdown(url)
     # print(content)
-    result = await translator_agent.run(content)
+    result = await translator_agent.run(url)
     print(result.output)
     meta = await meta_agent.run(result.output, deps=MyDeps(url=url))
     print(meta)

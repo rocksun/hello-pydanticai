@@ -1,4 +1,4 @@
-from pydantic_ai import Agent
+from pydantic_ai import Agent, RunContext
 import os
 import httpx
 from pydantic_ai.models.gemini import GeminiModel  # Update import to use GeminiModel
@@ -7,6 +7,25 @@ from pydantic import BaseModel
 from dataclasses import dataclass
 import readability
 from markdownify import markdownify as md
+from langfuse import get_client, Langfuse
+
+# os.environ["LANGFUSE_PUBLIC_KEY"] = os.getenv('LANGFUSE_PUBLIC_KEY')
+# os.environ["LANGFUSE_SECRET_KEY"] = os.getenv('LANGFUSE_SECRET_KEY')
+# os.environ["LANGFUSE_HOST"] = os.getenv('LANGFUSE_HOST')
+ 
+# langfuse = get_client()
+
+langfuse = Langfuse(
+  debug=True
+)
+ 
+# Verify connection
+if langfuse.auth_check():
+    print("Langfuse client is authenticated and ready!")
+else:
+    print("Authentication failed. Please check your credentials and host.")
+ 
+Agent.instrument_all()
 
 proxy = os.getenv('HTTP_PROXY')
 client = httpx.AsyncClient(proxy=proxy, timeout=120)
@@ -32,14 +51,15 @@ meta_agent = Agent(
     retries=3,
     deps_type=MyDeps,
     output_type=ArticleMeta,
-    instructions="""Analyze the content and provide structured response with Chinese."""
+    instructions="""Analyze the content and provide structured response with Chinese.""",
+    instrument=True
 )
 
 translator_agent = Agent(
     model=model,
     retries=3,
     instructions="""As a cloud native expert and translator.
-Translate this article from English to Chinese. 
+Fetch and Translate this article from English to Chinese. 
 Keep the markdown format intact.
 
 TRANSLATION REQUIREMENTS:
@@ -49,9 +69,12 @@ TRANSLATION REQUIREMENTS:
 - Do not print explanation, just print the translation.
 - Ensure the text of link will be translated.
 - Translate 'obserablity' into '可观测性'.
-- Make sure translate the text into Simplified Chinese."""
+- Make sure translate the text into Simplified Chinese.""",
+    instrument=True
 )
 
+
+@translator_agent.tool_plain
 async def fetch_and_convert_to_markdown(url: str) -> str:
     """
     Fetches and converts the content of the given URL to markdown format.
@@ -73,12 +96,12 @@ async def fetch_and_convert_to_markdown(url: str) -> str:
 
 async def main():
     url = 'https://thenewstack.io/boost-performance-with-react-server-components-and-next-js/'
-    content = await fetch_and_convert_to_markdown(url)
     # print(content)
-    result = await translator_agent.run(content)
+    result = await translator_agent.run(url)
     print(result.output)
     meta = await meta_agent.run(result.output, deps=MyDeps(url=url))
     print(meta)
+    langfuse.flush()
 
 if __name__ == "__main__":
     import asyncio
